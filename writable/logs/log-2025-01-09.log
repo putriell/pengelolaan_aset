@@ -1,0 +1,13 @@
+CRITICAL - 2025-01-09 03:12:29 --> CodeIgniter\View\Exceptions\ViewException: Invalid file: "data.php"
+[Method: GET, Route: data]
+in SYSTEMPATH\Exceptions\FrameworkException.php on line 41.
+ 1 SYSTEMPATH\View\View.php(222): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('data.php')
+ 2 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('data', [], true)
+ 3 APPPATH\Controllers\DataAset.php(9): view('data')
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\DataAset->index()
+ 5 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\DataAset))
+ 6 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(334): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+10 SYSTEMPATH\rewrite.php(44): require_once('C:\\xampp\\htdocs\\pengelolaan_aset\\public\\index.php')
