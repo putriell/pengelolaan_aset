@@ -132,6 +132,7 @@
                 </div>
               </form>
             </div>
+          
             
         </div>
               <!-- /.card-header -->
@@ -176,7 +177,8 @@
                       </tr>
                     <?php endif; ?>
                   </tbody>
-          </table>           
+          </table>  
+                  
     </div>  
     </div>
     

@@ -24,6 +24,8 @@
     <link rel="stylesheet" href="adminLTE/plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->
     <link rel="stylesheet" href="adminLTE/plugins/summernote/summernote-bs4.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+
     <style>
         /* Tambahkan ini ke file CSS kustom Anda */
         .ugm {
@@ -117,16 +119,26 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="col-3">
-          <div class="form-group">
-            <label>Tampilkan dari:</label>                                    
-              <select class="select2" style="width: 100%;">
-                <option selected>Semua Unit</option>
-                <option>Unit Perpustakaan</option>
-                <option>Unit Multimedia</option>
-              </select>
-          </div>
+      <div class="col-3">
+      <form method="get" action="<?= base_url('dashboard') ?>">
+        <div class="form-group">
+            <select id="unitSelect" name="unit" class="select2 form-control" style="width: 100%;" onchange="this.form.submit()">
+                <option value="" <?= empty($selected_unit) ? 'selected' : '' ?>>Pilih Unit</option>
+               
+                  <?php if (!empty($unit)): ?>
+                    <?php foreach ($unit as $units): ?>
+                      <option value="<?= esc($units['unit']) ?>" 
+                        <?= ($selected_unit == $units['unit']) ? 'selected' : '' ?>>
+                        <?= esc($units['unit']) ?>
+                      </option>
+
+                    <?php endforeach; ?>
+                    <?php else: ?>
+                      <option value="" disabled>Tidak ada unit tersedia</option>
+                  <?php endif; ?>
+            </select>
         </div>
+      </div>
         <!-- Small boxes (Stat box) -->
         <div class="row">
           <div class="col-lg-3 col-6">
@@ -247,5 +259,12 @@
     <script src="adminLTE/dist/js/demo.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="adminLTE/dist/js/pages/dashboard.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+
+  <script>
+      $(document).ready(function() {
+          $('.select2').select2();
+      });
+  </script>
 </body>
 </html>

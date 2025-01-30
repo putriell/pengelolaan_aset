@@ -91,6 +91,7 @@
         <a class="nav-link" data-toggle="user" href="#">
           <i class="far fa-user fa-inverse"></i>
         </a>
+      </li>
     </ul>
     </ul>
   </nav>

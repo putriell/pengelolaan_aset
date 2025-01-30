@@ -18,9 +18,10 @@ class DataAset extends BaseController
         public function index() {
             $model = new DataModel();
             
+            
             $data['data_aset'] = $model ->findAll();
             $data['keyword'] = '';
-
+            
             return view('data_aset', $data);
         
         }
