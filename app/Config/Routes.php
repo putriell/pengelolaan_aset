@@ -13,6 +13,8 @@ $routes->get('/data_aset', 'DataAset::index');
 $routes->get('/user', 'User::index');
 $routes->get('/login', 'Login::index');
 $routes->post('login/auth', 'Login::auth');
+$routes->get('logout', 'Login::logout');
+$routes->post('/user/ganti_password', 'User::ganti_password');
 $routes->post('/data_aset/simpan', 'DataAset::simpan');
 $routes->get('/data_aset/hapus/(:num)', 'DataAset::hapus/$1');
 $routes->get('/data_aset/edit/(:num)', 'DataAset::edit/$1');

@@ -55,4 +55,34 @@ class User extends BaseController
         return redirect()->to('/user');
     }
 
+    public function ganti_password(){
+        $model = new UserModel();
+        $validation = [
+            'password_lama' => 'required',
+            'password_baru' => 'required',
+            'konfirmasi_password' => 'required'
+        ];
+        if (!$this->validate($validation)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        } else {
+            $username = session()->get('username'); // Ambil username dari session
+     $passwordLama = $this->request->getPost('password_lama');
+        $passwordBaru = $this->request->getPost('password_baru');
+    
+            // Ambil data user berdasarkan username
+            $user = $model->where('username', $username)->first();
+    
+            if ($user && password_verify($passwordLama, $user['password'])) {
+                // Update password jika password lama sesuai
+                $newPassword = password_hash($passwordBaru, PASSWORD_DEFAULT);
+                $model->updatePassword($username, $newPassword);
+    
+                return redirect()->to('/dashboard')->with('success', 'Password berhasil diubah.');
+            } else {
+                // Password lama salah
+                return redirect()->back()->with('error', 'Password lama tidak sesuai.');
+            }
+        }
+    }
+
 }

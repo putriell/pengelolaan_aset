@@ -13,4 +13,9 @@ class UserModel extends Model
     public function getUser($username){
         return $this->where('username', $username)->first();
     }
+    public function updatePassword($username, $newPassword) {
+        return $this->db->table('users')
+        ->where('username', $username)
+        ->update(['password' => $newPassword]);    
+    }
 }

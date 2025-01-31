@@ -83,17 +83,19 @@
     </ul>
 
     <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Navbar Search -->
-      <ul class="navbar-nav ml-auto">
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item user">
-        <a class="nav-link" data-toggle="user" href="#">
-          <i class="far fa-user fa-inverse"></i>
-        </a>
-      </li>
-    </ul>
-    </ul>
+        <ul class="navbar-nav ml-auto">
+            <!-- Menampilkan nama user -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span class="mr-2" style="color:white"><?= session()->get('username') ?></span>  
+                  <i class="far fa-user fa-inverse" style="color:white;"></i> 
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                    <a class="dropdown-item"  data-toggle="modal" data-target="#ganti_password">Ganti Password</a>
+                    <a class="dropdown-item" href="logout">Logout</a>
+                </div>
+            </li>
+        </ul>
   </nav>
   <aside class="main-sidebar sidebar-light elevation-4">
     <!-- Brand Logo -->
@@ -143,6 +145,36 @@
     </div>
   </aside>
 </div>
+<div class="modal fade" id="ganti_password" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="myModalLabel">Tambah Data</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="ganti_password" action="<?= base_url('user/ganti_password') ?>" method="POST">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="password"> Password lama</label>
+                <input type="password" class="form-control" id="nama" name="password_lama" placeholder="Masukkan password lama" required>
+              </div>
+              <div class="form-group">
+                <label for="password">Password baru</label>
+                <input type="password" class="form-control" id="kode" name="password_baru" placeholder="Masukkan password baru" required>
+              </div>
+              <div class="form-group">
+                <label for="password">Ulangi Password baru</label>
+                <input type="password" class="form-control" id="kode" name="konfirmasi_password" placeholder="Ulangi password baru" required>
+              </div>
+              
+              <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 </body>
 </html>
 

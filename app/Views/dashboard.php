@@ -123,7 +123,7 @@
       <form method="get" action="<?= base_url('dashboard') ?>">
         <div class="form-group">
             <select id="unitSelect" name="unit" class="select2 form-control" style="width: 100%;" onchange="this.form.submit()">
-                <option value="" <?= empty($selected_unit) ? 'selected' : '' ?>>Pilih Unit</option>
+                <option value="" <?= empty($selected_unit) ? 'selected' : '' ?>>Semua Unit</option>
                
                   <?php if (!empty($unit)): ?>
                     <?php foreach ($unit as $units): ?>

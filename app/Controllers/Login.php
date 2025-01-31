@@ -47,8 +47,12 @@ class Login extends BaseController
 
         if ($user && password_verify($password, $user['password'])) {
             // Jika berhasil login, buat session dan redirect ke dashboard
-            session()->set('user_id', $user['id']);
-            return redirect()->to('dashboard');
+            session()->set([
+                'user_id' => $user['id'],
+                'username' => $user['username'], // Simpan nama user
+                'isLoggedIn' => true
+            ]);
+            return redirect()->to('/dashboard');
         } else {
             // Jika gagal login, kembali ke form login dengan pesan error
             session()->setFlashdata('error', 'Username atau password salah');
@@ -59,7 +63,7 @@ class Login extends BaseController
     public function logout()
     {
         session()->destroy();
-        return redirect()->to('login');
+        return redirect()->to('login')->with('success', 'Berhasil logout.');
     }
     
         
