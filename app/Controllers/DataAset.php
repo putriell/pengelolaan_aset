@@ -18,8 +18,16 @@ class DataAset extends BaseController
         public function index() {
             $model = new DataModel();
             
+            $unit = session()->get('unit');
+            if ($unit === 'admin') {
+                $data['data_aset'] = $this->dataAsetModel->findAll();
+            } 
+            else{
+                $data['data_aset'] = $this->dataAsetModel->where('unit', $unit)->findAll();
+            }
             
-            $data['data_aset'] = $model ->findAll();
+
+            
             $data['keyword'] = '';
             
             return view('data_aset', $data);
@@ -44,34 +52,35 @@ class DataAset extends BaseController
             return redirect('data_aset') -> with('success', 'Data berhasil dihapus');
         }
 
-        public function edit($id){
+        public function edit($id) {
             $model = new DataModel();
-           
-            $item =  $model->find($id);
-            if (!$item) {
-                return $this->response->setJSON(['error'=> 'Data tidak ditemukan'], 404);
-            }
-    
-            // return view('data_aset/edit', $data);
-            // if(!$data) {
-            //     return $this ->response->setJSON(['error' => 'Data not found']);
-            // return view('data_aset', $data);
-            // }
-            return $this ->response->setJSON(['item' => $item]);
+            $data = $model->getData($id);
+
+            // return view('data_aset/edit', ); 
+            return $this->response->setJSON(['data' => $data]); // Mengirimkan data dalam format JSON
         }
-        public function update(){
+        public function update() {
             $model = new DataModel();
             
+            // Ambil data dari form
+            $id = $this->request->getPost('id');
             $data = [
                 'nama' => $this->request->getPost('nama'),
                 'kode' => $this->request->getPost('kode'),
                 'jenis' => $this->request->getPost('jenis'),
                 'unit' => $this->request->getPost('unit'),
-                'kondisi' => $this->request->getPost('kondisi'),
+                'kondisi' => $this->request->getPost('kondisi')
             ];
-            $id = $this->request->getPost('id');
+    
+            if (!$id || !$model->find($id)) {
+                return redirect()->back()->with('error', 'Data tidak valid.');
+            }
+        
+            // Update data di database
             $model->update($id, $data);
-            return redirect('data_aset') -> to('data_aset');
+    
+            session()->setFlashdata('message', 'Data aset berhasil diperbarui.');
+            return redirect()->to('/data_aset'); // Ganti dengan URL yang sesuai
         }
 
         public function search() {

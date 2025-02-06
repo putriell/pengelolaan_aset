@@ -162,12 +162,19 @@
                       <td><?= esc($row['kondisi']) ?></td>
                       <td class="text-center" >
                       
-                        <a href="#" class="edit-data" data-href="<?= base_url('data_aset/edit/'.$row['id']) ?>" data-toggle="modal" data-target="#edit-data">
+                        <a href="#" data-href="<?=base_url('data_aset/edit/'.$row['id']) ?>" class="edit-data" data-id="<?= esc($row['id']) ?>" 
+                data-nama="<?= esc($row['nama']) ?>" 
+                data-kode="<?= esc($row['kode']) ?>" 
+                data-jenis="<?= esc($row['jenis']) ?>" 
+                data-unit="<?= esc($row['unit']) ?>" 
+                data-kondisi="<?= esc($row['kondisi']) ?>"
+                data-toggle="modal" data-target="#edit-data">
                          <i class="fas fa-edit"></i></a>
                        <a href="#" data-href="<?= base_url('data_aset/hapus/'.$row['id']) ?>" onclick="confirmToDelete(this)">
                           <i class="fas fa-trash-alt pl-3"></i>
-                        </a>
+                        </a> 
                       </td>
+                      
 
                     </tr>
                     <?php endforeach; ?>
@@ -181,6 +188,7 @@
                   
     </div>  
     </div>
+    
     
     <div class="modal fade" id="tambah-data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
@@ -224,6 +232,7 @@
         </div>
       </div>
     </div>
+   
     
     <div class="modal fade" id="edit-data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
@@ -234,10 +243,10 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <?php if (isset($data_aset)): ?>
-          <form id="edit-data"  action="<?= base_url('/data_aset/update') ?>" method="POST">
+          
+          <form id="edit-data"  action="<?= base_url('data_aset/update') ?>" method="POST">
             <div class="modal-body">
-            <input type="hidden" name="id" id="id" value="<?= esc($row['id']) ?>"> 
+              <input type="hidden" name="id" value="<?= esc($row['id']) ?>">
               <div class="form-group">
                 <label for="nama">Nama Aset</label>
                 <input type="text" class="form-control" id="nama" name="nama" value="<?= esc($row['nama']) ?>" required> 
@@ -254,6 +263,7 @@
               <div class="form-group">
                 <label for="unit">Unit</label>
                 <input type="text" class="form-control" id="unit" name="unit" value="<?= esc($row['unit']) ?>" required> 
+                </div>
               <div class="form-group">
                 <label for="kondisi">Kondisi</label>
                 <select class="form-control" id="kondisi" name="kondisi" value="<?= esc($row['kondisi']) ?>" required>
@@ -264,16 +274,15 @@
                 </select>
               </div>
               <button type="submit" class="btn btn-primary">Update</button>
-            </div>
+              </div>
           </form>
-          <?php else: ?>
-            <p>Data tidak ditemukan</p>
-            <?php endif; ?>
+          
+          
           </div>
       </div>
     </div>
-  </div>
-</div>
+    <?php echo $row['id'] ?>
+
 <div id="confirm-dialog" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -298,25 +307,31 @@
       // $("#delete-button").attr("href", el.dataset.href);
       // $("#confirm-dialog").modal('show');
   } 
-  $(document).on('click', '.edit-data', function() {
-          let id = $(this).data('id'); // Ambil ID dari atribut data-id
-          $.ajax({
-              url: '<?= base_url("data_aset/edit") ?>/' + id, // Endpoint untuk mengambil data
-              method: 'GET',
-              success: function(response) {
-                  // Isi data ke dalam form modal
-                  $('#edit-data #id').val(response.item.id);
-                  $('#edit-data #nama').val(response.item.nama);
-                  $('#edit-data #kode').val(response.item.kode);
-                  $('#edit-data #jenis').val(response.item.jenis);
-                  $('#edit-data #unit').val(response.item.unit);
-                  $('#edit-data #kondisi').val(response.item.kondisi);
-              },
-              error: function(xhr) {
-                  alert('Terjadi kesalahan saat memuat data.');
-              }
-          });
-      });
+
+</script>
+<script>
+// Script untuk mengisi modal dengan data aset yang dipilih
+$(document).ready(function() {
+    $('.edit_data').on('click', function() {
+        var id = $(this).data('id'); // Ambil ID dari tombol yang diklik
+        var nama = $(this).data('nama');
+        var kode = $(this).data('kode');
+        var jenis = $(this).data('jenis');
+        var unit = $(this).data('unit');
+        var kondisi = $(this).data('kondisi');
+
+        // Isi nilai-nilai ke dalam modal
+        $('#edit-data #id').val(id);
+        $('#edit-data #nama').val(nama);
+        $('#edit-data #kode').val(kode);
+        $('#edit-data #jenis').val(jenis);
+        $('#edit-data #unit').val(unit);
+        $('#edit-data #kondisi').val(kondisi);
+
+        // Tampilkan modal
+        $('#edit-data').modal('show');
+    });
+});
 </script>
  
   <script src="adminLTE/plugins/jquery/jquery.min.js"></script>

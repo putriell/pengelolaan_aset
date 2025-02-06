@@ -6,10 +6,14 @@ use App\Models\UserModel;
 
 class Login extends BaseController
 {
-    public function index(): string
+    public function index()
     {
-    
+        
+        if ($this->session->get('logged_in')) {
+            return redirect()->to('dashboard');
+        }
         return view('login');
+        
     }
 
     public function auth(){
@@ -42,6 +46,8 @@ class Login extends BaseController
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
 
+        $user = $model->where('username', $username) -> first();
+
         // Ambil data pengguna dari database berdasarkan username
         $user = $model->getUser($username);
 
@@ -50,7 +56,8 @@ class Login extends BaseController
             session()->set([
                 'user_id' => $user['id'],
                 'username' => $user['username'], // Simpan nama user
-                'isLoggedIn' => true
+                'unit'      => $user['unit'],
+                'logged_in' => true
             ]);
             return redirect()->to('/dashboard');
         } else {
@@ -58,6 +65,9 @@ class Login extends BaseController
             session()->setFlashdata('error', 'Username atau password salah');
             return redirect()->to('login');
         }
+        
+        
+
     }
 
     public function logout()

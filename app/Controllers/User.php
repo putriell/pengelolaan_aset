@@ -84,5 +84,13 @@ class User extends BaseController
             }
         }
     }
+    public function reset_password($id) {
+        $model = new UserModel();
+        $newPassword = password_hash('admin123', PASSWORD_DEFAULT);
+        $model->update($id, ['password' =>$newPassword]);
+
+        session()->setFlashdata('message', 'Password telah direset menjadi admin123.');
+        return redirect()->to('/user');
+    }
 
 }

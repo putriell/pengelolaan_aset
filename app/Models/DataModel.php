@@ -15,10 +15,10 @@ class DataModel extends Model
             return $this->where('unit', $unit)->countAllResults();
         }
         return $this->countAllResults();
-        // return $this->countAllResults();
+        
     }
     public function AsetTersedia($unit = null) {
-        $this->where('kondisi', 'Tersedia');
+        $this->where('kondisi', 'tersedia');
         if ($unit) {
             $this->where('unit', $unit);
         }
@@ -27,7 +27,7 @@ class DataModel extends Model
     }
 
     public function AsetRusak($unit = null) {
-        $this->where('kondisi', 'Rusak');
+        $this->where('kondisi', 'rusak');
         if ($unit) {
             $this->where('unit', $unit);
         }
@@ -36,7 +36,7 @@ class DataModel extends Model
     }
 
     public function AsetHilang($unit = null) {
-        $this->where('kondisi', 'Hilang');
+        $this->where('kondisi', 'hilang');
         if ($unit) {
             $this->where('unit', $unit);
         }
@@ -80,6 +80,13 @@ class DataModel extends Model
         // return $units;
         
 
+    }
+
+    public function getData($id = null){
+        if ($id) {
+            return $this->where('id', $id)->first();
+        }
+        return $this->orderBy('id', 'DESC')->findAll();
     }
 
 }

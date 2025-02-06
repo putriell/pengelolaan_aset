@@ -119,6 +119,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+      <?php if (session()->get('unit') === 'admin'): ?>
       <div class="col-3">
       <form method="get" action="<?= base_url('dashboard') ?>">
         <div class="form-group">
@@ -138,7 +139,9 @@
                   <?php endif; ?>
             </select>
         </div>
+        
       </div>
+      <?php endif; ?>
         <!-- Small boxes (Stat box) -->
         <div class="row">
           <div class="col-lg-3 col-6">

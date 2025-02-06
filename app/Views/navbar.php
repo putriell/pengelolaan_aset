@@ -132,6 +132,7 @@
               </p>
             </a>
           </li>
+          <?php if (session()->get('unit') === 'admin'): ?>
           <li class="nav-item">
           <a href="<?=base_url('user') ?>" class="nav-link <?= url_is('user') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-user"></i>
@@ -140,6 +141,7 @@
               </p>
             </a>
           </li>
+          <?php endif; ?>
           </ul>
       </nav>
     </div>

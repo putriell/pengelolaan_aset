@@ -1,3 +1,5 @@
+<?php if (session()->get('unit') === 'admin'): ?>
+     
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -139,6 +141,7 @@
                     <th>No.</th>
                     <th>Username</th>
                     <th>Unit</th>
+                    <th>Reset Password</th>
                     <th>Tindakan</th>
                   </tr>
                   </thead>
@@ -149,6 +152,11 @@
                       <td><?= $no++ ?></td>
                       <td><?= esc($row['username']) ?></td>
                       <td><?= esc($row['unit']) ?></td>
+                      <td class="text-center">
+                      <a href="#" data-href="<?= base_url('/user/reset_password/' . $row['id']); ?>" title="Reset Password" onclick="confirmReset(this)">
+                        <i class="fas fa-redo"></i>
+                      </a>
+                      </td>
                       <td class="text-center" >
                       
                         <a href="#" class="edit-data" data-href="<?= base_url('user/edit/'.$row['id']) ?>" data-toggle="modal" data-target="#edit-data">
@@ -238,7 +246,21 @@
     </div>
   </div>
 </div>
+<?php if(session()->getFlashdata('message')): ?>
+    <div class="alert alert-success">
+        <?= session()->getFlashdata('message') ?>
+    </div>
+<?php endif; ?>
 
+
+<script>
+function confirmReset(element) {
+    const url = element.getAttribute('data-href');
+    if (confirm('Apakah Anda yakin ingin mereset password menjadi "admin123"?')) {
+        window.location.href = url;
+    }
+}
+</script>
 <script>
   function confirmToDelete(el){
     const href = el.getAttribute('data-href');
@@ -306,4 +328,5 @@
 console.log(href)
 </body>
 </html>
+<?php endif; ?>
 

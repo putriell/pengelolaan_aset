@@ -12,7 +12,8 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
-use App\Filters\Auth;
+use App\Filters\Authenticate;
+use App\Filters\RedirectIfAuthenticated;
 
 class Filters extends BaseFilters
 {
@@ -35,7 +36,8 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
-        'auth'          => Auth::class,
+        'auth'          => Authenticate::class,
+        'guest'         => RedirectIfAuthenticated::class,
     ];
 
     /**
