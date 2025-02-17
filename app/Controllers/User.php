@@ -29,30 +29,41 @@ class User extends BaseController
         return redirect('user') -> with('success', 'Data berhasil dihapus');
     }
 
-    public function edit($id){
+    public function edit($id) {
         $model = new UserModel();
-        $data['user'] = $model->find($id);
-        return view('user/edit', $data);
-    }
-    public function update($id){
-        $model = new UserModel();
-        $id = $this->request->getPost('id'); // Get ID from POST data
+        $data['users'] = $model->getById($id);
 
-        if (!$this->validate([
-            'username' => 'required',
-            'unit' => 'required'
-        ])) {
-            return redirect()->to('/user/edit/' . $id)->withInput()->with('validation', $this->validator);
+    // Jika data tidak ditemukan
+        if (empty($data['users'])) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Data tidak ditemukan');
         }
 
+        return view('edit_user', $data);
+    }
+
+    public function update() {
+        $model = new UserModel();
+        
+        // Ambil data dari form
+        $id = $this->request->getPost('id');
+        if (!$this->validate([
+            'username'    => 'required',
+            'unit'    => 'required',
+        ])) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        // Data yang akan diupdate
         $data = [
-            'username' => $this->request->getPost('username'),
-            'unit' => $this->request->getPost('unit')
+            'username'    => $this->request->getPost('username'),
+            'unit'    => $this->request->getPost('unit')
         ];
 
+        // Update data
         $model->update($id, $data);
-        session()->setFlashData('pesan', 'Data berhasil diubah');
-        return redirect()->to('/user');
+
+        // Redirect kembali ke halaman data aset
+        return redirect()->to(base_url('user'))->with('success', 'Data berhasil diupdate');
     }
 
     public function ganti_password(){
@@ -92,5 +103,17 @@ class User extends BaseController
         session()->setFlashdata('message', 'Password telah direset menjadi admin123.');
         return redirect()->to('/user');
     }
+    public function search() {
+        $model = new UserModel();
+        $keyword = $this->request->getGet('keyword');
+        if ($keyword) {
+            $data['users'] = $model->search($keyword);
+        } else {
+            $data['users'] = $model->findAll(); // Jika tidak ada keyword, ambil semua
+        }
+        $data['keyword'] = $keyword;
+        return view('user', $data);
+    }
+
 
 }

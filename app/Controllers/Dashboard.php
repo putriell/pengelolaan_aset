@@ -19,8 +19,9 @@ class Dashboard extends BaseController {
             $data['total_aset'] = $model->TotalAset($selectedUnit);
             $data['aset_tesedia'] = $model->AsetTersedia($selectedUnit);
             $data['aset_hilang'] = $model->AsetHilang($selectedUnit);
+           
             $data['aset_rusak'] = $model->AsetRusak($selectedUnit);
-            $data['data_aset'] = $model ->TotalbyName($selectedUnit);    
+            $data['data_aset'] = $model ->TotalbyName($selectedUnit); 
             $data['unit'] = $model->getDatabyUnit();
             $data['selected_unit'] = $selectedUnit;
             
@@ -30,9 +31,15 @@ class Dashboard extends BaseController {
             $data['aset_hilang'] = $model->AsetHilang($unit);
             $data['aset_rusak'] = $model->AsetRusak($unit);
             $data['data_aset'] = $model ->TotalbyName($unit); 
-
+            
         }
+        
         return view('dashboard', $data);
     
     }
+
+    
+
+
+
 }

@@ -1,6 +1,8 @@
 <?php
 
 namespace Config;
+
+use App\Controllers\DetailAset;
 use CodeIgniter\Router\RouteCollection;
 $routes = Services::routes();
 
@@ -28,7 +30,11 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('/user/hapus/(:num)', 'User::hapus/$1');
     $routes->get('/user/edit/(:num)', 'User::edit/$1');
     $routes->post('/user/update', 'User::update'); 
+    $routes->get('/user/search', 'User::search');
     $routes->get('/user/reset_password/(:num)', 'User::reset_password/$1');
+    $routes->get('/detail_aset/(:any)', 'DetailAset::index/$1');
+    $routes->get('/detail_aset/search/(:any)', 'DetailAset::search/$1');
+
 
     $routes->setAutoRoute(true); 
 });

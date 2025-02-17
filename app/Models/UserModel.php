@@ -18,4 +18,17 @@ class UserModel extends Model
         ->where('username', $username)
         ->update(['password' => $newPassword]);    
     }
+    public function getById($id){
+        return $this->where('id', $id)->first();
+    }
+    public function search($keyword, $unit = null) {
+        if ($keyword) {
+            return $this->like('username', $keyword)
+                        ->orLike('unit', $keyword)
+                        ->findAll();
+        }
+        
+        return $this->findAll();
+    }
+
 }

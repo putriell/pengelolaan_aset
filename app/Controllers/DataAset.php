@@ -54,33 +54,44 @@ class DataAset extends BaseController
 
         public function edit($id) {
             $model = new DataModel();
-            $data = $model->getData($id);
+            $data['data_aset'] = $model->getById($id);
 
-            // return view('data_aset/edit', ); 
-            return $this->response->setJSON(['data' => $data]); // Mengirimkan data dalam format JSON
+        // Jika data tidak ditemukan
+            if (empty($data['data_aset'])) {
+                throw new \CodeIgniter\Exceptions\PageNotFoundException('Data tidak ditemukan');
+            }
+
+            return view('edit_data', $data);
         }
         public function update() {
             $model = new DataModel();
             
             // Ambil data dari form
             $id = $this->request->getPost('id');
+            if (!$this->validate([
+                'nama'    => 'required',
+                'kode'    => 'required',
+                'jenis'   => 'required',
+                'unit'    => 'required',
+                'kondisi' => 'required',
+            ])) {
+                return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            }
+    
+            // Data yang akan diupdate
             $data = [
-                'nama' => $this->request->getPost('nama'),
-                'kode' => $this->request->getPost('kode'),
-                'jenis' => $this->request->getPost('jenis'),
-                'unit' => $this->request->getPost('unit'),
-                'kondisi' => $this->request->getPost('kondisi')
+                'nama'    => $this->request->getPost('nama'),
+                'kode'    => $this->request->getPost('kode'),
+                'jenis'   => $this->request->getPost('jenis'),
+                'unit'    => $this->request->getPost('unit'),
+                'kondisi' => $this->request->getPost('kondisi'),
             ];
     
-            if (!$id || !$model->find($id)) {
-                return redirect()->back()->with('error', 'Data tidak valid.');
-            }
-        
-            // Update data di database
+            // Update data
             $model->update($id, $data);
     
-            session()->setFlashdata('message', 'Data aset berhasil diperbarui.');
-            return redirect()->to('/data_aset'); // Ganti dengan URL yang sesuai
+            // Redirect kembali ke halaman data aset
+            return redirect()->to(base_url('data_aset'))->with('success', 'Data berhasil diupdate');
         }
 
         public function search() {

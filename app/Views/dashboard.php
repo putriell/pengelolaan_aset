@@ -25,6 +25,7 @@
     <!-- summernote -->
     <link rel="stylesheet" href="adminLTE/plugins/summernote/summernote-bs4.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         /* Tambahkan ini ke file CSS kustom Anda */
@@ -204,30 +205,41 @@
                   <tr>
                     <th>No.</th>
                     <th>Nama Aset</th>
-                    <th>Kode Aset</th>
+                    
                     <th>Jenis Aset</th>
                     <th>Total</th>
+                    <th>Detail</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?php $no = 1; ?>
                   
                    <?php foreach ($data_aset as $row) : ?>
-                    
+                   
                     <tr>
                       <td><?= $no++ ?></td>
+                      
                       <td><?= esc($row['nama']) ?></td>
-                      <td><?= esc($row['kode']) ?></td>
                       <td><?= esc($row['jenis']) ?></td>
                       <td><?= esc($row['total']) ?></td>
-                      
+                      <td class="text-center">
+                          <?php if ($row['total'] > 1) : ?>
+                              <a href="<?= base_url('detail_aset/' . urlencode($row['nama'])) ?>" class="btn btn-sm btn-info">
+                                  <i class="fas fa-bars"></i> Detail
+                              </a>
+                          <?php endif; ?>
+                      </td>
+
                     </tr>
                     <?php endforeach; ?>
                     
                   </tbody>
-          </table>            
-    </div>
-    </section>
+                  
+
+          </table>  
+
+      
+      </script>
     <script src="adminLTE/plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="adminLTE/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -263,6 +275,8 @@
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="adminLTE/dist/js/pages/dashboard.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
   <script>
       $(document).ready(function() {

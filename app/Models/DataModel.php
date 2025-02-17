@@ -8,7 +8,7 @@ class DataModel extends Model
 {
     protected $table = 'data_aset';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['nama', 'kode', 'jenis', 'unit', 'kondisi'];
+    protected $allowedFields = ['id','nama', 'kode', 'jenis', 'unit', 'kondisi'];
     
     public function TotalAset($unit = null) {
         if ($unit) {
@@ -54,6 +54,13 @@ class DataModel extends Model
         // ->groupBy('nama')
         // ->findAll();
     }
+    public function getDetailByName($nama, $unit = null)
+    {
+        $this->select('nama, unit, kode, jenis, kondisi');
+        $this->where('nama', $nama);
+        
+        return $this->findAll();
+    }
 
     public function search($keyword, $unit = null) {
         if ($keyword) {
@@ -88,5 +95,28 @@ class DataModel extends Model
         }
         return $this->orderBy('id', 'DESC')->findAll();
     }
+
+    public function searchDetail($keyword, $nama ,$unit = null) {
+        if ($keyword) {
+            return $this->like('nama', $keyword)
+                        ->orLike('kode', $keyword)
+                        ->orLike('jenis', $keyword)
+                        ->orLike('unit', $keyword)
+                        ->orLike('kondisi', $keyword)
+                        ->findAll();
+        }
+        // $this->where('nama', $nama);
+
+        if ($unit) {
+            $this->where('unit', $unit);
+        }
+        return $this->findAll();
+    }
+
+    public function getById($id){
+        return $this->where('id', $id)->first();
+    }
+
+    
 
 }
