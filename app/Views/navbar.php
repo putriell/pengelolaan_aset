@@ -117,7 +117,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="<?=base_url('dashboard') ?>" class="nav-link <?= url_is('dashboard') ? 'active' : '' ?>">
+            <a href="<?=base_url('dashboard') ?>" class="nav-link <?= (uri_string() == 'dashboard' || uri_string() == 'detail_aset' || uri_string() == 'detail_aset/search') ? 'active' : '' ?>">
                <i class="nav-icon fas fa-home"></i>
               <p>
                 Dashboard
@@ -125,7 +125,7 @@
             </a>
             
           <li class="nav-item">
-            <a href="<?=base_url('data_aset') ?>" class="nav-link <?= url_is('data_aset') ? 'active' : '' ?>">
+            <a href="<?=base_url('data_aset') ?>" class="nav-link <?= (uri_string() =='data_aset' || uri_string() == 'data_aset/search') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-table"></i>
               <p>
                 Data aset
@@ -134,7 +134,7 @@
           </li>
           <?php if (session()->get('unit') === 'admin'): ?>
           <li class="nav-item">
-          <a href="<?=base_url('user') ?>" class="nav-link <?= url_is('user') ? 'active' : '' ?>">
+          <a href="<?=base_url('user') ?>" class="nav-link <?= (uri_string() =='user' || uri_string() == 'user/search') ? 'active' : '' ?>">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Pengguna

@@ -12,15 +12,29 @@ class DetailAset extends BaseController
         $data['nama'] = $nama;
         return view('detail_aset', $data);
     }
+
     public function search() {
         $model = new DataModel();
         $keyword = $this->request->getGet('keyword');
-        if ($keyword) {
-            $data['data_aset'] = $model->search($keyword);
+        $unit = session()-> get('unit');
+        
+        
+        if (empty($keyword)) {
+            if ($unit === 'admin') {
+                $data['data_aset'] = $model->getAllData();
+            } else{
+                $data['data_aset'] = $model->searchDetail(null, $unit);
+            }    
         } else {
-            $data['data_aset'] = $model->findAll(); // Jika tidak ada keyword, ambil semua
+            $data['data_aset'] = $model->searchDetail($keyword, $unit);
         }
+        
+        
+        // $data['data_aset'] = $model->search($keyword, $unit);
+        
         $data['keyword'] = $keyword;
-        return view('/detail_aset', $data);
+        return view('detail_aset', $data);
+        
     }
+
 }

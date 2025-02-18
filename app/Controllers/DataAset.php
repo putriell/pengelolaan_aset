@@ -97,12 +97,26 @@ class DataAset extends BaseController
         public function search() {
             $model = new DataModel();
             $keyword = $this->request->getGet('keyword');
-            if ($keyword) {
-                $data['data_aset'] = $model->search($keyword);
+            $unit = session()-> get('unit');
+            
+            
+            if (empty($keyword)) {
+                if ($unit === 'admin') {
+                    $data['data_aset'] = $model->getAllData();
+                } else{
+                    $data['data_aset'] = $model->search(null, $unit);
+                }    
             } else {
-                $data['data_aset'] = $model->findAll(); // Jika tidak ada keyword, ambil semua
+                $data['data_aset'] = $model->search($keyword, $unit);
             }
+            
+            
+            // $data['data_aset'] = $model->search($keyword, $unit);
+            
             $data['keyword'] = $keyword;
-            return view('/data_aset', $data);
+            return view('data_aset', $data);
+            
         }
+
+        
 }

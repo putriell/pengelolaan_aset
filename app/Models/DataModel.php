@@ -63,6 +63,7 @@ class DataModel extends Model
     }
 
     public function search($keyword, $unit = null) {
+       
         if ($keyword) {
             return $this->like('nama', $keyword)
                         ->orLike('kode', $keyword)
@@ -74,7 +75,26 @@ class DataModel extends Model
         if ($unit) {
             $this->where('unit', $unit);
         }
+        
         return $this->findAll();
+    }
+
+    public function searchDetail($keyword, $unit) {
+        $builder = $this;
+        if ($keyword) {
+            $builder = $builder->groupStart()
+                        ->like('nama', $keyword)
+                        ->orLike('kode', $keyword)
+                        ->orLike('jenis', $keyword)
+                        ->orLike('unit', $keyword)
+                        ->orLike('kondisi', $keyword)
+                        ->groupEnd();
+        }
+        if ($unit !== 'admin') {
+            $builder->where('unit', $unit);
+        }
+        
+        return $builder->findAll();
     }
 
     public function getDatabyUnit (){
@@ -95,23 +115,10 @@ class DataModel extends Model
         }
         return $this->orderBy('id', 'DESC')->findAll();
     }
-
-    public function searchDetail($keyword, $nama ,$unit = null) {
-        if ($keyword) {
-            return $this->like('nama', $keyword)
-                        ->orLike('kode', $keyword)
-                        ->orLike('jenis', $keyword)
-                        ->orLike('unit', $keyword)
-                        ->orLike('kondisi', $keyword)
-                        ->findAll();
-        }
-        // $this->where('nama', $nama);
-
-        if ($unit) {
-            $this->where('unit', $unit);
-        }
+    public function getAllData() {
         return $this->findAll();
     }
+
 
     public function getById($id){
         return $this->where('id', $id)->first();
