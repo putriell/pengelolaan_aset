@@ -32,8 +32,7 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->post('/user/update', 'User::update'); 
     $routes->get('/user/search', 'User::search');
     $routes->get('/user/reset_password/(:num)', 'User::reset_password/$1');
-    $routes->get('/detail_aset/(:any)', 'DetailAset::index/$1');
-    $routes->get('/detail_aset/search/(:any)', 'DetailAset::search/$1');
+    $routes->get('/detail_aset/(:any)', 'DataAset::getDetail/$1');
 
 
     $routes->setAutoRoute(true); 

@@ -62,40 +62,9 @@ class DataModel extends Model
         return $this->findAll();
     }
 
-    public function search($keyword, $unit = null) {
-       
-        if ($keyword) {
-            return $this->like('nama', $keyword)
-                        ->orLike('kode', $keyword)
-                        ->orLike('jenis', $keyword)
-                        ->orLike('unit', $keyword)
-                        ->orLike('kondisi', $keyword)
-                        ->findAll();
-        }
-        if ($unit) {
-            $this->where('unit', $unit);
-        }
-        
-        return $this->findAll();
-    }
+    
 
-    public function searchDetail($keyword, $unit) {
-        $builder = $this;
-        if ($keyword) {
-            $builder = $builder->groupStart()
-                        ->like('nama', $keyword)
-                        ->orLike('kode', $keyword)
-                        ->orLike('jenis', $keyword)
-                        ->orLike('unit', $keyword)
-                        ->orLike('kondisi', $keyword)
-                        ->groupEnd();
-        }
-        if ($unit !== 'admin') {
-            $builder->where('unit', $unit);
-        }
-        
-        return $builder->findAll();
-    }
+    
 
     public function getDatabyUnit (){
         return $this->select('unit')
@@ -119,10 +88,47 @@ class DataModel extends Model
         return $this->findAll();
     }
 
+    public function search($keyword, $perPage = 10, $unit = null) {
+        $builder = $this;
+    
+        if ($keyword) {
+            $builder = $builder->groupStart()
+                        ->like('nama', $keyword)
+                        ->orLike('kode', $keyword)
+                        ->orLike('jenis', $keyword)
+                        ->orLike('unit', $keyword)
+                        ->orLike('kondisi', $keyword)
+                        ->groupEnd();
+        }
+    
+        if ($unit) {
+            $builder->where('unit', $unit);
+        }
+    
+        return $builder->paginate($perPage);
+    }
+    
 
     public function getById($id){
         return $this->where('id', $id)->first();
     }
+
+    public function getPaginatedData($perPage = 10, $keyword = null)
+{
+    $builder = $this;
+
+    if ($keyword) {
+        $builder = $builder->groupStart()
+                    ->like('nama', $keyword)
+                    ->orLike('kode', $keyword)
+                    ->orLike('jenis', $keyword)
+                    ->orLike('kondisi', $keyword)
+                    ->groupEnd();
+    }
+
+    return $builder->paginate($perPage);
+}
+
 
     
 

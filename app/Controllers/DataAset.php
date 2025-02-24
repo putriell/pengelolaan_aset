@@ -17,7 +17,8 @@ class DataAset extends BaseController
 
         public function index() {
             $model = new DataModel();
-            
+            $keyword = $this->request->getVar('search');
+
             $unit = session()->get('unit');
             if ($unit === 'admin') {
                 $data['data_aset'] = $this->dataAsetModel->findAll();
@@ -26,13 +27,24 @@ class DataAset extends BaseController
                 $data['data_aset'] = $this->dataAsetModel->where('unit', $unit)->findAll();
             }
             
-
             
+            $perPage = 10; // Jumlah data per halaman
+            
+
+            // Ambil data dengan pagination
+            $data = [
+                'data_aset'   => $model->getPaginatedData($perPage, $keyword), // Pass keyword to the model
+                'pager'       => $model->pager,
+                'page'        => $this->request->getVar('page') ?? 1,
+                'totalPages'  => $model->pager->getPageCount(),
+                'search'      => $keyword ?? '',
+            ];
             $data['keyword'] = '';
             
             return view('data_aset', $data);
         
         }
+
         public function simpan() {
             $model = new DataModel();
             $data = [
@@ -96,26 +108,33 @@ class DataAset extends BaseController
 
         public function search() {
             $model = new DataModel();
-            $keyword = $this->request->getGet('keyword');
-            $unit = session()-> get('unit');
-            
-            
-            if (empty($keyword)) {
-                if ($unit === 'admin') {
-                    $data['data_aset'] = $model->getAllData();
-                } else{
-                    $data['data_aset'] = $model->search(null, $unit);
-                }    
-            } else {
-                $data['data_aset'] = $model->search($keyword, $unit);
+            $keyword = $this->request->getGet('keyword'); // Ambil keyword dari query string
+            $unit = session()->get('unit');
+        
+            $perPage = (int) ($this->request->getVar('per_page') ?? 10);
+            if ($perPage <= 0) {
+                $perPage = 10; // Set nilai default jika nol atau negatif
             }
-            
-            
-            // $data['data_aset'] = $model->search($keyword, $unit);
-            
+        
+            // Ambil data dengan pagination berdasarkan keyword
+            $data['data_aset'] = $model->getPaginatedData($perPage, $keyword);
+        
+            // Data tambahan untuk pagination
+            $data['pager'] = $model->pager;
+            $data['page'] = $this->request->getVar('page') ?? 1;
+            $data['totalPages'] = $model->pager->getPageCount();
             $data['keyword'] = $keyword;
+        
             return view('data_aset', $data);
-            
+        }
+        
+
+        public function getDetail($nama){
+            $unit = session()->get('unit');
+            $model = new DataModel();
+            $data['data_aset'] = $model->getDetailByName($nama, $unit);
+            $data['nama'] = $nama;
+            return view('detail_aset', $data);
         }
 
         

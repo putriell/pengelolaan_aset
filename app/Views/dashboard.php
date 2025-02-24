@@ -208,7 +208,7 @@
                     
                     <th>Jenis Aset</th>
                     <th>Total</th>
-                    <th>Detail</th>
+                    <!-- <th>Detail</th> -->
                   </tr>
                   </thead>
                   <tbody>
@@ -222,13 +222,7 @@
                       <td><?= esc($row['nama']) ?></td>
                       <td><?= esc($row['jenis']) ?></td>
                       <td><?= esc($row['total']) ?></td>
-                      <td class="text-center">
-                          <?php if ($row['total'] > 1) : ?>
-                              <a href="<?= base_url('detail_aset/' . urlencode($row['nama'])) ?>" class="btn btn-sm btn-info">
-                                  <i class="fas fa-bars"></i> Detail
-                              </a>
-                          <?php endif; ?>
-                      </td>
+                     
 
                     </tr>
                     <?php endforeach; ?>
