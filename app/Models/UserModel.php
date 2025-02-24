@@ -9,6 +9,7 @@ class UserModel extends Model
     protected $table = 'users';
     protected $primaryKey = 'id';
     protected $allowedFields = ['username', 'unit', 'password'];
+   
 
     public function getUser($username){
         return $this->where('username', $username)->first();
@@ -21,14 +22,30 @@ class UserModel extends Model
     public function getById($id){
         return $this->where('id', $id)->first();
     }
-    public function search($keyword, $unit = null) {
+    public function search($keyword, $perPage = 10,) {
+        $builder = $this->table($this->table);
         if ($keyword) {
-            return $this->like('username', $keyword)
-                        ->orLike('unit', $keyword)
-                        ->findAll();
+            $builder->groupStart()
+                    -> like('username', $keyword)
+                    ->orLike('unit', $keyword)
+                    ->groupEnd();
         }
         
-        return $this->findAll();
+        return $builder->paginate($perPage);
+    }
+
+    public function getPaginatedData($perPage = 10, $keyword = null)
+    {
+        $builder = $this;
+
+        if ($keyword) {
+            $builder ->groupStart()
+                     ->like('username', $keyword)
+                     ->orLike('unit', $keyword)
+                     ->groupEnd();
+        }
+
+        return $builder->paginate($perPage);
     }
 
 }

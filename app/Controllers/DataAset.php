@@ -33,7 +33,7 @@ class DataAset extends BaseController
 
             // Ambil data dengan pagination
             $data = [
-                'data_aset'   => $model->getPaginatedData($perPage, $keyword), // Pass keyword to the model
+                'data_aset'   => $model->getPaginatedData($perPage, $keyword, $unit), // Pass keyword to the model
                 'pager'       => $model->pager,
                 'page'        => $this->request->getVar('page') ?? 1,
                 'totalPages'  => $model->pager->getPageCount(),
@@ -44,6 +44,34 @@ class DataAset extends BaseController
             return view('data_aset', $data);
         
         }
+        public function search() {
+            $model = new DataModel();
+            $keyword = $this->request->getGet('keyword'); // Ambil keyword dari query string
+            $unit = session()->get('unit');
+        
+            $perPage = (int) ($this->request->getVar('per_page') ?? 10);
+            if ($perPage <= 0) {
+                $perPage = 10; // Set nilai default jika nol atau negatif
+            }
+
+            if ($unit === 'admin') {
+                $data['data_aset'] = $model->getPaginatedData($perPage, $keyword);
+            } else {
+                $data['data_aset'] = $model->search($keyword, $perPage, $unit);
+            }
+        
+            // Ambil data dengan pagination berdasarkan keyword
+            $data['data_aset'] = $model->getPaginatedData($perPage, $keyword, $unit);
+        
+            // Data tambahan untuk pagination
+            $data['pager'] = $model->pager;
+            $data['page'] = $this->request->getVar('page') ?? 1;
+            $data['totalPages'] = $model->pager->getPageCount();
+            $data['keyword'] = $keyword;
+        
+            return view('data_aset', $data);
+        }
+        
 
         public function simpan() {
             $model = new DataModel();
@@ -106,27 +134,6 @@ class DataAset extends BaseController
             return redirect()->to(base_url('data_aset'))->with('success', 'Data berhasil diupdate');
         }
 
-        public function search() {
-            $model = new DataModel();
-            $keyword = $this->request->getGet('keyword'); // Ambil keyword dari query string
-            $unit = session()->get('unit');
-        
-            $perPage = (int) ($this->request->getVar('per_page') ?? 10);
-            if ($perPage <= 0) {
-                $perPage = 10; // Set nilai default jika nol atau negatif
-            }
-        
-            // Ambil data dengan pagination berdasarkan keyword
-            $data['data_aset'] = $model->getPaginatedData($perPage, $keyword);
-        
-            // Data tambahan untuk pagination
-            $data['pager'] = $model->pager;
-            $data['page'] = $this->request->getVar('page') ?? 1;
-            $data['totalPages'] = $model->pager->getPageCount();
-            $data['keyword'] = $keyword;
-        
-            return view('data_aset', $data);
-        }
         
 
         public function getDetail($nama){

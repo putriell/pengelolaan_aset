@@ -107,7 +107,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-left">
               <li class="breadcrumb-item" ><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Data Aset</li>
+              <li class="breadcrumb-item active">User</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -148,7 +148,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <?php $no = 1; ?>
+                  <?php $no = 1 + (10 * ($page -1)); ?>
                    <?php foreach ($users as $row) : ?>
                     <tr>
                       <td><?= $no++ ?></td>
@@ -173,6 +173,36 @@
                   </tbody>
           </table>           
     </div>  
+    <div class="card-footer">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <?php if ($totalPages > 1): ?>
+                        <?php if ($page > 1): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $page - 1 ?>&keyword=<?= urlencode($keyword) ?>">« Prev</a>
+                            </li>
+                        <?php endif; ?>
+
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                                <a class="page-link" href="?page=<?= $i ?>&keyword=<?= urlencode($keyword) ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <?php if ($page < $totalPages): ?>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<?= $page + 1 ?>&keyword=<?= urlencode($keyword) ?>">Next »</a>
+                            </li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
     </div>
     
     <div class="modal fade" id="tambah-data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

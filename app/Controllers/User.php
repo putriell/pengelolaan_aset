@@ -8,8 +8,19 @@ class User extends BaseController
     public function index(): string
     {
         $model = new UserModel();
+        
+        $keyword = $this->request->getVar('search');
             
         $data['users'] = $model ->findAll();
+        $perPage = 10;
+        $data = [
+            'users'        => $model->getPaginatedData($perPage, $keyword), // Pass keyword to the model
+            'pager'       => $model->pager,
+            'page'        => $this->request->getVar('page') ?? 1,
+            'totalPages'  => $model->pager->getPageCount(),
+            'search'      => $keyword ?? '',
+        ];
+        $data['keyword'] = '';
 
         return view('user', $data);
     }
@@ -46,9 +57,12 @@ class User extends BaseController
         
         // Ambil data dari form
         $id = $this->request->getPost('id');
+        if (!$id || !$model->find($id)) {
+            return redirect()->back()->with('errors', ['ID tidak ditemukan']);
+        }
         if (!$this->validate([
             'username'    => 'required',
-            'unit'    => 'required',
+            'unit'        => 'required',
         ])) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
@@ -77,7 +91,7 @@ class User extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         } else {
             $username = session()->get('username'); // Ambil username dari session
-     $passwordLama = $this->request->getPost('password_lama');
+        $passwordLama = $this->request->getPost('password_lama');
         $passwordBaru = $this->request->getPost('password_baru');
     
             // Ambil data user berdasarkan username
@@ -106,11 +120,20 @@ class User extends BaseController
     public function search() {
         $model = new UserModel();
         $keyword = $this->request->getGet('keyword');
+        $perPage = (int) ($this->request->getVar('per_page') ?? 10);
+        if ($perPage <= 0) {
+            $perPage = 10; // Set nilai default jika nol atau negatif
+        }
         if ($keyword) {
             $data['users'] = $model->search($keyword);
         } else {
             $data['users'] = $model->findAll(); // Jika tidak ada keyword, ambil semua
         }
+
+        $data['users'] = $model->getPaginatedData($perPage, $keyword);
+        $data['pager'] = $model->pager;
+        $data['page'] = $this->request->getVar('page') ?? 1;
+        $data['totalPages'] = $model->pager->getPageCount();
         $data['keyword'] = $keyword;
         return view('user', $data);
     }

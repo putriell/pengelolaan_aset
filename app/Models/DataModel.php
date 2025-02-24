@@ -104,6 +104,9 @@ class DataModel extends Model
         if ($unit) {
             $builder->where('unit', $unit);
         }
+        if ($unit && $unit !== 'admin') {
+            $builder = $builder->where('unit', $unit);
+        }
     
         return $builder->paginate($perPage);
     }
@@ -113,21 +116,25 @@ class DataModel extends Model
         return $this->where('id', $id)->first();
     }
 
-    public function getPaginatedData($perPage = 10, $keyword = null)
-{
-    $builder = $this;
+    public function getPaginatedData($perPage = 10, $keyword = null, $unit = null)
+    {
+        $builder = $this;
 
-    if ($keyword) {
-        $builder = $builder->groupStart()
-                    ->like('nama', $keyword)
-                    ->orLike('kode', $keyword)
-                    ->orLike('jenis', $keyword)
-                    ->orLike('kondisi', $keyword)
-                    ->groupEnd();
+        if ($keyword) {
+            $builder = $builder->groupStart()
+                        ->like('nama', $keyword)
+                        ->orLike('kode', $keyword)
+                        ->orLike('jenis', $keyword)
+                        ->orLike('kondisi', $keyword)
+                        ->groupEnd();
+        }
+        if ($unit && $unit !== 'admin') {
+            $builder = $builder->where('unit', $unit);
+        }
+
+
+        return $builder->paginate($perPage);
     }
-
-    return $builder->paginate($perPage);
-}
 
 
     

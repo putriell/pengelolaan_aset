@@ -97,10 +97,10 @@
         <?php endif; ?>
 
         
-          <form id="edit-data"  action="<?= base_url('user/update') ?>" method="POST">
+          <form action="<?= base_url('user/update') ?>" method="POST">
             <div class="modal-body">
-            <input type="hidden" name="id" id="id">
-              
+            <input type="hidden" name="id" value="<?= esc($users['id']) ?>">
+            
               <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" value="<?= esc($users['username']) ?>" required> 
@@ -108,9 +108,12 @@
               <div class="form-group">
                 <label for="unit">Unit</label>
                 <input type="text" class="form-control" id="unit" name="unit" value="<?= esc($users['unit']) ?>" required> 
-                </div>
-              <button type="submit" class="btn btn-primary">Update</button>
-            </div>
+              </div>
+              
+                <button type="submit" class="btn btn-primary">Update</button>
+                
+              <a href="<?= base_url('user') ?>" class="btn btn-secondary">Kembali</a>
+              </div>
             
           </form>
           
