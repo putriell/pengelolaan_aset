@@ -136,7 +136,32 @@ class DataModel extends Model
         return $builder->paginate($perPage);
     }
 
+    public function dashboardPaginate($perPage = 5, $unit = null ){
+        $builder = $this->select('nama, unit, kode, jenis, COUNT(nama) as total');
 
+        if ($unit && $unit !== 'admin') {
+            $builder->where('unit', $unit);
+        }
+    
+        return $builder->groupBy('nama')->paginate($perPage);
+    }
     
 
+    public function homePaginate($perPage = 10, $keyword = null)
+    {
+        $builder = $this->select('nama, unit, kode, jenis, COUNT(*) as total')
+                        ->groupBy('nama, unit'); // Tambahkan GROUP BY
+    
+        if ($keyword) {
+            $builder = $builder->groupStart()
+                        ->like('nama', $keyword)
+                        ->orLike('jenis', $keyword)
+                        ->orLike('kondisi', $keyword)
+                        ->orLike('unit', $keyword)
+                        ->groupEnd();
+        }
+    
+        return $builder->paginate($perPage);
+    }
+    
 }

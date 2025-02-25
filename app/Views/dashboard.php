@@ -212,7 +212,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <?php $no = 1; ?>
+                  <?php $no = 1 + (5 * ($page -1)); ?>
                   
                    <?php foreach ($data_aset as $row) : ?>
                    
@@ -231,6 +231,38 @@
                   
 
           </table>  
+        </div>
+        <div class="card-footer">
+          <div class="row">
+              <div class="col-12">
+                  <nav aria-label="Page navigation">
+                      <ul class="pagination">
+                          <?php if ($totalPages > 1): ?>
+                              <?php if ($page > 1): ?>
+                                  <li class="page-item">
+                                      <a class="page-link" href="?page=<?= $page - 1 ?>">« Prev</a>
+                                  </li>
+                              <?php endif; ?>
+
+                              <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                  <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                                      <a class="page-link" href="?page=<?= $i ?>"><?= $i ?></a>
+                                  </li>
+                              <?php endfor; ?>
+
+                              <?php if ($page < $totalPages): ?>
+                                  <li class="page-item">
+                                      <a class="page-link" href="?page=<?= $page + 1 ?>">Next »</a>
+                                  </li>
+                              <?php endif; ?>
+                          <?php endif; ?>
+                      </ul>
+                  </nav>
+              </div>
+          </div>
+      </div>
+      </div>
+
 
       
       </script>

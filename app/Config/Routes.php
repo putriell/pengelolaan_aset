@@ -12,7 +12,9 @@ $routes = Services::routes();
 
 $routes->group('', ['filter' => 'guest'], function($routes) {
     $routes->get('/', 'Home::index');
+    $routes->get('/home/search', 'Home::search');
     $routes->get('/login', 'Login::index');
+    $routes->get('/home/login', 'Login::index');
     $routes->post('login/auth', 'Login::auth');
 });
 $routes->group('', ['filter' => 'auth'], function($routes) {

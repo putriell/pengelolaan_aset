@@ -13,6 +13,7 @@ class Dashboard extends BaseController {
     public function index() {
         $model = new DataModel();
         $unit = session()->get('unit');
+        $perPage = 10; 
         if($unit === 'admin'){
             $selectedUnit = $this->request->getGet('unit');
             
@@ -24,6 +25,7 @@ class Dashboard extends BaseController {
             $data['data_aset'] = $model ->TotalbyName($selectedUnit); 
             $data['unit'] = $model->getDatabyUnit();
             $data['selected_unit'] = $selectedUnit;
+            $data ['data_aset'] = $model->dashboardPaginate($perPage, $selectedUnit);
             
         } else{
             $data['total_aset'] = $model->TotalAset($unit);
@@ -31,8 +33,20 @@ class Dashboard extends BaseController {
             $data['aset_hilang'] = $model->AsetHilang($unit);
             $data['aset_rusak'] = $model->AsetRusak($unit);
             $data['data_aset'] = $model ->TotalbyName($unit); 
+            $data ['data_aset'] = $model->dashboardPaginate($perPage, $unit);
             
         }
+        // Jumlah data per halaman
+        $data['pager'] = $model->pager;
+        $data['page'] = $this->request->getVar('page') ?? 1;
+        $data['totalPages'] = $model->pager->getPageCount();
+
+
+        // $data = [
+        //     'pager'       => $model->pager,
+        //     'page'        => $this->request->getVar('page') ?? 1,
+        //     'totalPages'  => $model->pager->getPageCount(),
+        // ];
         
         return view('dashboard', $data);
     

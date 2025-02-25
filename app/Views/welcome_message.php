@@ -5,12 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> Pengelolaan Aset </title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="adminLTE/plugins/fontawesome-free/css/all.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/fontawesome-free/css/all.min.css') ?>">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') ?>">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css') ?>">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/jqvmap/jqvmap.min.css') ?>">
     <!-- Theme style -->
-    <link rel="stylesheet" href="adminLTE/dist/css/adminlte.min.css">
-
-    <style>
+    <link rel="stylesheet" href="<?= base_url('adminLTE/dist/css/adminlte.min.css?v=3.2.0') ?>">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') ?>">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/daterangepicker/daterangepicker.css') ?>">
+    <!-- summernote -->
+    <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/summernote/summernote-bs4.min.css')?>">
+     <style>
         /* Tambahkan ini ke file CSS kustom Anda */
         .ugm {
             background-color: #083D62 !important; /* Warna biru UGM */
@@ -81,15 +94,17 @@
     <!-- Main content -->
       <div class="card">
         <div class="card-header">
-            <div class="form-group mx-auto" style="max-width:500px; padding-top: 20px; ">
+        <div class="form-group mx-auto" style="max-width:500px; padding-top: 20px; ">
+            <form action="<?= base_url('home/search') ?>" method="get">
                 <div class="input-group input-group-lg">
-                    <input type="search" class="form-control form-control-lg" placeholder="Type your keywords here" value="Lorem ipsum">
+                    <input type="search" name="keyword" class="form-control form-control-lg" placeholder="Type your keywords here" value="<?= isset($keyword) ? esc($keyword) : '' ?>">
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-lg btn-default">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
                 </div>
+              </form>
             </div>
         </div>
               <!-- /.card-header -->
@@ -105,7 +120,7 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <?php $no = 1; ?>
+                  <?php $no = 1 + (10 * ($page -1)); ?>
                   <?php foreach ($data_aset as $row) : ?>
                     <tr>
                       <td><?= $no++ ?></td>
@@ -119,15 +134,46 @@
                   </tbody>
           </table>            
     </div>
+        <div class="card-footer">
+        <div class="row">
+            <div class="col-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <?php if ($totalPages > 1): ?>
+                            <?php if ($page > 1): ?>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=<?= $page - 1 ?>&keyword=<?= urlencode($keyword) ?>">« Prev</a>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                <li class="page-item <?= ($i == $page) ? 'active' : '' ?>">
+                                    <a class="page-link" href="?page=<?= $i ?>&keyword=<?= urlencode($keyword) ?>"><?= $i ?></a>
+                                </li>
+                            <?php endfor; ?>
+
+                            <?php if ($page < $totalPages): ?>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=<?= $page + 1 ?>&keyword=<?= urlencode($keyword) ?>">Next »</a>
+                                </li>
+                            <?php endif; ?>
+                        <?php endif; ?>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    </div>
+
     </section>
-    <script src="../../plugins/jquery/jquery.min.js"></script>
+    
+    <script src="<?= base_url('adminLTE/plugins/jquery/jquery.min.js') ?>"></script>
+    <!-- jQuery UI 1.11.4 -->
+
     <!-- Bootstrap 4 -->
-    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Select2 -->
-    <script src="../../plugins/select2/js/select2.full.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="../../dist/js/adminlte.min.js"></script>
-    <!-- AdminLTE for demo purposes -->
-    <script src="../../dist/js/demo.js"></script>
+    <script src="<?= base_url('adminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
+    <!-- ChartJS -->
+
+    <script src="<?= base_url('adminLTE/dist/js/adminlte.js') ?>"></script>
 </body>
 </html>
