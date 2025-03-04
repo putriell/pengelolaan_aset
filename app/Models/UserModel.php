@@ -47,5 +47,22 @@ class UserModel extends Model
 
         return $builder->paginate($perPage);
     }
+     public function getUserUnit($user_id)
+    {
+        $user = $this->where('id', $user_id)->first();
+        if ($user && $user['unit'] !== 'admin') {
+            return $user['unit'];
+        }
+        return null;
+    }
+     public function getAllUnit()
+     {
+        return $this->select('unit')
+        ->distinct()
+        ->where('unit IS NOT NULL')
+        ->orderBy('unit', 'ASC')
+        ->findAll();
+      }
+
 
 }

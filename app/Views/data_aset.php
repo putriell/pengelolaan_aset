@@ -89,6 +89,7 @@
           
             
         </div>
+        
               <!-- /.card-header -->
         <div class="card-body">
           <table id="example1" class="table table-bordered table-striped">
@@ -169,7 +170,7 @@
 
     </div>
     
-    
+    <?php $userUnit = session()->get('unit'); ?>
     <div class="modal fade" id="tambah-data" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -195,7 +196,14 @@
               </div>
               <div class="form-group">
                 <label for="unit">Unit</label>
-                <input type="text" class="form-control" id="unit" name="unit" placeholder="contoh: multimedia" required>
+                <?php if ($userUnit === 'admin') : ?>
+        <!-- Admin bisa mengubah unit -->
+                    <input type="text" name="unit" class="form-control" value="<?= old('unit', $data_aset['unit'] ?? '') ?>" required>
+                <?php else : ?>
+                    <!-- User biasa tidak bisa mengganti unit -->
+                    <input type="text" name="unit" class="form-control" value="<?= $userUnit ?>" readonly>
+                <?php endif; ?>
+            
               </div>
               <div class="form-group">
                 <label for="kondisi">Kondisi</label>

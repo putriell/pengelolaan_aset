@@ -130,8 +130,8 @@
                   <?php if (!empty($unit)): ?>
                     <?php foreach ($unit as $units): ?>
                       <option value="<?= esc($units['unit']) ?>" 
-                        <?= ($selected_unit == $units['unit']) ? 'selected' : '' ?>>
-                        <?= esc($units['unit']) ?>
+                          <?= ($selected_unit == $units['unit']) ? 'selected' : '' ?>>
+                          <?= esc($units['unit']) ?>
                       </option>
 
                     <?php endforeach; ?>

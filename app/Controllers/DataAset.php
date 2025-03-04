@@ -75,11 +75,16 @@ class DataAset extends BaseController
 
         public function simpan() {
             $model = new DataModel();
+            $unit = $this->request->getPost('unit');
+            $userUnit = session()->get('unit');
+            if ($userUnit !== 'admin') {
+                $unit = $userUnit;
+            }
             $data = [
                 'nama' => $this->request->getPost('nama'),
                 'kode' => $this->request->getPost('kode'),
                 'jenis' => $this->request->getPost('jenis'),
-                'unit' => $this->request->getPost('unit'),
+                'unit' => $unit,
                 'kondisi' => $this->request->getPost('kondisi'),
             ];
             $model->insert($data);
